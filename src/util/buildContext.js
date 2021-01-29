@@ -66,10 +66,16 @@ export default async function buildContext(context, request = {}) {
     if (!account) {
       try {
         Logger.debug(`Creating missing account for user ID ${userId}`);
+        const { collections: { users } } = context;
+        const user = await users.findOne({ _id: userId });
+
         account = await context.mutations.createAccount(context.getInternalContext(), {
-          emails: context.user.emails && context.user.emails.map((rec) => ({ ...rec, provides: rec.provides || "default" })),
-          name: context.user.name,
-          profile: context.user.profile || {},
+          emails: user.emails && user.emails.map((rec) => ({
+            ...rec,
+            provides: rec.provides || "default"
+          })),
+          name: user.name,
+          profile: user.profile || {},
           userId
         });
       } catch (error) {
