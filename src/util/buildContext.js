@@ -32,8 +32,7 @@ export default async function buildContext(context, request = {}) {
 
         const allPermissions = await Promise.all(allAuthPluginFunctions.map(async (func) => {
           // call with context for currying
-          const result = await func(context)(...args);
-          return result;
+          return func(context)(...args);
         }));
 
         // userHasPermission if ALL permission checks are `true`
@@ -45,7 +44,14 @@ export default async function buildContext(context, request = {}) {
     }
 
     context.validatePermissions = async (...args) => {
+      // const { collections: { Groups, Accounts } } = context;
       const allowed = await context.userHasPermission(...args);
+      // const talentGroup = await Groups.findOne({ name: "talent" });
+      // if (talentGroup) {
+      //   const account = await Accounts.findOne({ _id: userId, groups: { $in: [talentGroup._id] } });
+      //   console.log(account, talentGroup, 88);
+      //   if (!allowed && !account) throw new ReactionError("access-denied", "Access Denied");
+      // }
       if (!allowed) throw new ReactionError("access-denied", "Access Denied");
     };
   } else {
