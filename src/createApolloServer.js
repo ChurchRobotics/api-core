@@ -73,7 +73,6 @@ export default function createApolloServer(options = {}) {
   const apolloServer = new ApolloServer({
     async context({ connection, req }) {
       const context = { ...contextFromOptions };
-      console.log(config);
 
       // For a GraphQL subscription WebSocket request, there is no `req`
       if (connection) return context;
@@ -92,6 +91,8 @@ export default function createApolloServer(options = {}) {
     introspection: config.GRAPHQL_INTROSPECTION_ENABLED,
     playground: config.GRAPHQL_PLAYGROUND_ENABLED
   });
+
+  // console.log(config.NODE_ENV, 11);
 
   const gqlMiddleware = expressMiddleware.filter((def) => def.route === "graphql" || def.route === "all");
 
