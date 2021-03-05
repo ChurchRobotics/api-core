@@ -73,6 +73,7 @@ export default function createApolloServer(options = {}) {
   const apolloServer = new ApolloServer({
     async context({ connection, req }) {
       const context = { ...contextFromOptions };
+      console.log(config);
 
       // For a GraphQL subscription WebSocket request, there is no `req`
       if (connection) return context;
