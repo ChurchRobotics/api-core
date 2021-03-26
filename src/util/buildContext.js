@@ -74,7 +74,7 @@ export default async function buildContext(context, request = {}) {
         Logger.debug(`Creating missing account for user ID ${userId}`);
         const { collections: { users } } = context;
         const user = await users.findOne({ _id: userId });
-
+        Logger.info(user);
         account = await context.mutations.createAccount(context.getInternalContext(), {
           emails: user.emails && user.emails.map((rec) => ({
             ...rec,
